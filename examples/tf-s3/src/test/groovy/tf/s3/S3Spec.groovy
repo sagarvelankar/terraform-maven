@@ -10,8 +10,24 @@ import com.deliveredtechnologies.terraform.api.TerraformPlan
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
 import spock.lang.Specification
+import spock.lang.Unroll
 
 class S3Spec extends Specification {
+
+
+
+        @Unroll("maximum of #a and #b is #c")
+        def "maximum of two numbers"() {
+            expect:
+            Math.max(a, b) == c
+
+            where:
+            a | b | c
+            3 | 7 | 7
+            5 | 4 | 5
+            9 | 9 | 9
+        }
+
 
     def "S3 module provisions a bucket in AWS"() {
         given:
