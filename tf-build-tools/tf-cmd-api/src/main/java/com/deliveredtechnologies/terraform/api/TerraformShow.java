@@ -42,18 +42,15 @@ public class TerraformShow extends TerraformCliOperation {
       return this.format;
     }
 
-
   }
 
   TerraformShow(Executable terraform) {
     super(terraform);
   }
 
-
   public TerraformShow(String tfRootDir) throws IOException, TerraformException {
-    this(new TerraformCommandLineDecorator(TerraformCommand.SHOW, new CommandLine(tfRootDir == null || tfRootDir.isEmpty() ? TerraformUtils.getDefaultTerraformRootModuleDir() : TerraformUtils.getTerraformRootModuleDir(tfRootDir), false, LoggerFactory.getLogger(CommandLine.class))));
+    this(new TerraformCommandLineDecorator(TerraformCommand.SHOW, tfRootDir));
   }
-
 
   @Override
   protected TerraformOption[] getTerraformParams() {
