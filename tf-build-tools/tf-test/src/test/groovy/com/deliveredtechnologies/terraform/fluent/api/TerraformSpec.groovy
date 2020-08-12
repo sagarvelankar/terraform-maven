@@ -22,7 +22,7 @@ class TerraformSpec extends Specification {
                 .withProperties([noColor: true])
 
         TfPlan tfPlan = terraform.initAndPlan()
-        Map rawPlan = tfPlan.rawPlan
+        Map rawPlan = tfPlan.raw
 
         expect:
 
@@ -34,7 +34,7 @@ class TerraformSpec extends Specification {
                 .withProperties([noColor: true])
 
         TfState tfState = terraform.initAndApply()
-        Map rawState = tfState.rawState
+        Map rawState = tfState.raw
 
         expect:
 

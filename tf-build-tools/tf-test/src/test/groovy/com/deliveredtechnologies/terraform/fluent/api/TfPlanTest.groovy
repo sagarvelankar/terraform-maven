@@ -10,7 +10,7 @@ class TfPlanTest extends Specification {
     TfPlan tfPlan
 
     def setupSpec() {
-        tfPlan = new TfPlan(new File("./src/test/resources/tf_show_example.json").text)
+        tfPlan = new TfPlan(new File("./src/test/resources/terraform.tfplan.json").text)
     }
 
     def "GetResourcesByType"() {
@@ -18,8 +18,10 @@ class TfPlanTest extends Specification {
         List<Map> resources = tfPlan.getResourcesByType("aws_s3_bucket")
 
         expect:
-        resources.size() == 1
-        resources[0].name == "bucket"
+        resources.size() == 3
+        resources[0].type == "aws_s3_bucket"
+        resources[1].type == "aws_s3_bucket"
+        resources[2].type == "aws_s3_bucket"
 
     }
 
@@ -28,8 +30,10 @@ class TfPlanTest extends Specification {
         List<Map> resources = tfPlan.getResourcesBy({it.type == "aws_s3_bucket"})
 
         expect:
-        resources.size() == 1
-        resources[0].name == "bucket"
+        resources.size() == 3
+        resources[0].type == "aws_s3_bucket"
+        resources[1].type == "aws_s3_bucket"
+        resources[2].type == "aws_s3_bucket"
     }
 
     def "GetOutputs"() {
@@ -37,6 +41,9 @@ class TfPlanTest extends Specification {
         Map outputs = tfPlan.getOutputs()
 
         expect:
-        outputs.bucket.value.bucket == "bucket-bb8937d0c3d09cab"
+        outputs.bucket_names.value.size() == 3
+        outputs.bucket_names.value.contains("tftest-bucket1")
+        outputs.bucket_names.value.contains("tftest-bucket2")
+        outputs.bucket_names.value.contains("tftest-bucket3")
     }
 }

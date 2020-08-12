@@ -1,14 +1,24 @@
 package com.deliveredtechnologies.terraform.fluent.api
 
-import groovy.json.JsonSlurper
+class TfState extends TfShow {
 
-class TfState {
-
-    Map rawState
-
-    JsonSlurper slurper = new JsonSlurper()
+    List<Map> resources
 
     TfState (String showJsonOutput) {
-        rawState = (Map) slurper.parseText(showJsonOutput)
+        super(showJsonOutput)
+        resources = flattenModules(raw.values.root_module)
+    }
+
+
+    List<Map> getResourcesByType(String type) {
+        resources.findAll({it.type == type})
+    }
+
+    List<Map> getResourcesBy(Closure predicate) {
+        resources.findAll(predicate)
+    }
+
+    Map getOutputs() {
+        raw.values.outputs
     }
 }

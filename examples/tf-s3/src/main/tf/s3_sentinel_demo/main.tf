@@ -3,7 +3,7 @@ provider "aws" {
 }
 
 resource "aws_s3_bucket" "bucket1" {
-  bucket = "bucket1"
+  bucket = "tftest-bucket1"
 
   versioning {
     enabled = true
@@ -16,16 +16,10 @@ resource "aws_s3_bucket" "bucket1" {
   }
 }
 
-resource "aws_s3_bucket" "bucket2" {
-  bucket = "bucket2"
+module "bucket2" {
+  source = "./s3_module"
+}
 
-  versioning {
-    enabled = true
-  }
-
-  tags = {
-    application_id = "cna"
-    stack_name = "stacked"
-    created_by = "rhutto@deliveredtech.com"
-  }
+output "bucket_names" {
+  value = concat( [ aws_s3_bucket.bucket1.bucket ], module.bucket2.bucket_names )
 }

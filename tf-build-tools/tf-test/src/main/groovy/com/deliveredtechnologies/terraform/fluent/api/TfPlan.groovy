@@ -1,27 +1,20 @@
 package com.deliveredtechnologies.terraform.fluent.api
 
-import groovy.json.JsonSlurper
-
-class TfPlan {
-
-    Map rawPlan
-
-    JsonSlurper slurper = new JsonSlurper()
+class TfPlan extends TfShow {
 
     TfPlan(String showJsonOutput) {
-        rawPlan = (Map) slurper.parseText(showJsonOutput)
+        super(showJsonOutput)
     }
 
     List<Map> getResourcesByType(String type) {
-        rawPlan.resource_changes.findAll({it.type == type})
+        raw.resource_changes.findAll({it.type == type})
     }
 
     List<Map> getResourcesBy(Closure predicate) {
-        rawPlan.resource_changes.findAll(predicate)
+        raw.resource_changes.findAll(predicate)
     }
 
     Map getOutputs() {
-        rawPlan.planned_values.outputs
+        raw.planned_values.outputs
     }
-
 }
