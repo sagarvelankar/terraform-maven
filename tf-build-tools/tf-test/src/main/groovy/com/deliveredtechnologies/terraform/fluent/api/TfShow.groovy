@@ -12,7 +12,6 @@ abstract class TfShow {
 
     }
 
-
     List<Map> flattenModules(Map map) {
         map.collect { k, v ->
             if ( k == "resources") {

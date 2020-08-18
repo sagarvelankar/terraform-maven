@@ -39,6 +39,9 @@ class TerraformSpec extends Specification {
         expect:
 
         rawState.values.outputs.hello.value == "world"
+
+        cleanup:
+        terraform.destroy()
     }
 
 }

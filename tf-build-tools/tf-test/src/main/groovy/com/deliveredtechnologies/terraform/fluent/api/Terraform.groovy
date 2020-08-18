@@ -31,13 +31,11 @@ class Terraform {
         this.show = new TerraformShow(rootDir)
         this.destroy = new TerraformDestroy(rootDir)
         return this
-
     }
 
     Terraform withProperties(Map tfProperties) {
         if(!tfProperties.containsKey(TerraformPlan.Option.planOutputFile.getPropertyName())) {
             properties.put(TerraformPlan.Option.planOutputFile.getPropertyName(), defaultPlanOutputPath)
-
         }
         properties.putAll(tfProperties)
         return this
@@ -62,6 +60,10 @@ class Terraform {
         properties.put(TerraformShow.Option.path.getPropertyName(), "terraform.tfstate")
         tfState = new TfState(show.execute(properties))
         return tfState
+    }
+
+    String destroy() {
+       return destroy.execute(properties)
     }
 
 }

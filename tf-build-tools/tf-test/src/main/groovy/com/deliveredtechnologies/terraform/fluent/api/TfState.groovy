@@ -9,7 +9,6 @@ class TfState extends TfShow {
         resources = flattenModules(raw.values.root_module)
     }
 
-
     List<Map> getResourcesByType(String type) {
         resources.findAll({it.type == type})
     }
