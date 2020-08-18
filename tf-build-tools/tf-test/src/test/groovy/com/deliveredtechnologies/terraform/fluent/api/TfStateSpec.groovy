@@ -4,18 +4,19 @@ package com.deliveredtechnologies.terraform.fluent.api
 import spock.lang.Shared
 import spock.lang.Specification
 
-class TfPlanTest extends Specification {
+class TfStateSpec extends Specification {
+
 
     @Shared
-    TfPlan tfPlan
+    TfState tfState
 
     def setupSpec() {
-        tfPlan = new TfPlan(new File("./src/test/resources/terraform.tfplan.json").text)
+        tfState = new TfState(new File("./src/test/resources/terraform.tfstate.json").text)
     }
 
     def "GetResourcesByType"() {
         given:
-        List<Map> resources = tfPlan.getResourcesByType("aws_s3_bucket")
+        List<Map> resources = tfState.getResourcesByType("aws_s3_bucket")
 
         expect:
         resources.size() == 3
@@ -27,7 +28,7 @@ class TfPlanTest extends Specification {
 
     def "GetResourcesBy"() {
         given:
-        List<Map> resources = tfPlan.getResourcesBy({it.type == "aws_s3_bucket"})
+        List<Map> resources = tfState.getResourcesBy({it.type == "aws_s3_bucket"})
 
         expect:
         resources.size() == 3
@@ -38,7 +39,7 @@ class TfPlanTest extends Specification {
 
     def "GetOutputs"() {
         given:
-        Map outputs = tfPlan.getOutputs()
+        Map outputs = tfState.getOutputs()
 
         expect:
         outputs.bucket_names.value.size() == 3
@@ -46,4 +47,5 @@ class TfPlanTest extends Specification {
         outputs.bucket_names.value.contains("tftest-bucket2")
         outputs.bucket_names.value.contains("tftest-bucket3")
     }
+
 }
